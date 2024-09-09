@@ -18,7 +18,11 @@ const Register = () => {
     const email = e.target[1].value;
     const password = e.target[2].value;
     const file = e.target[3].files[0];
-
+    if (password.length < 6) {
+      setErr("Password should be at least 6 characters long.");
+      setLoading(false);
+      return; // Stop the function if validation fails
+    }
     try {
       //Create user
       const res = await createUserWithEmailAndPassword(auth, email, password);
