@@ -23,6 +23,11 @@ const Register = () => {
       setLoading(false);
       return; // Stop the function if validation fails
     }
+    if (!file) {
+      setErr("Please upload an image.");
+      setLoading(false);
+      return;
+    }
     try {
       //Create user
       const res = await createUserWithEmailAndPassword(auth, email, password);
