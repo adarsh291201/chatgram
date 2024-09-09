@@ -25,8 +25,8 @@ const Login = () => {
         <span className="logo">Chatgram</span>
         <span className="title">Login</span>
         <form onSubmit={handleSubmit}>
-          <input type="email" placeholder="email" />
-          <input type="password" placeholder="password" />
+          <input type="email" placeholder="email"required />
+          <input type="password" placeholder="password" required/>
           <button>Sign in</button>
           {err && <span>Something went wrong</span>}
         </form>
