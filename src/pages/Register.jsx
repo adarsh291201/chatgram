@@ -9,7 +9,17 @@ import { useNavigate, Link } from "react-router-dom";
 const Register = () => {
   const [err, setErr] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [password, setPassword] = useState(""); // State to hold the password
+  const [passwordError, setPasswordError] = useState(""); // State for password error
   const navigate = useNavigate();
+
+  const handlePasswordBlur = () => {
+    if (password.length < 6) {
+      setPasswordError("Password should be at least 6 characters long.");
+    } else {
+      setPasswordError(""); // Clear error if valid
+    }
+  };
 
   const handleSubmit = async (e) => {
     setLoading(true);
@@ -76,15 +86,23 @@ const Register = () => {
         <form onSubmit={handleSubmit}>
           <input required type="text" placeholder="display name" />
           <input required type="email" placeholder="email" />
-          <input required type="password" placeholder="password" />
-          <input required style={{ display: "none" }} type="file" id="file" />
+          <input
+            required
+            type="password"
+            placeholder="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)} // Update password state
+            onBlur={handlePasswordBlur} // Check password length on blur
+          />
+          {passwordError && <span style={{ color: "red" }}>{passwordError}</span>} {/* Display password error */}
+           <input required style={{ display: "none" }} type="file" id="file" />
           <label htmlFor="file">
             <img src={Add} alt="" />
             <span>Add an avatar</span>
           </label>
           <button disabled={loading}>Sign up</button>
           {loading && "Uploading and compressing the image please wait..."}
-          {err && <span>Something went wrong</span>}
+          {err && <span style={{ color: "red" }}>{err}</span>}
         </form>
         <p>
           You do have an account? <Link to="/login">Login</Link>
