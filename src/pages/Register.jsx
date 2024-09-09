@@ -11,6 +11,8 @@ const Register = () => {
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState(""); // State to hold the password
   const [passwordError, setPasswordError] = useState(""); // State for password error
+  const [email, setEmail] = useState(""); // State to hold the email
+  const [emailError, setEmailError] = useState("");
   const navigate = useNavigate();
 
   const handlePasswordBlur = () => {
@@ -18,6 +20,14 @@ const Register = () => {
       setPasswordError("Password should be at least 6 characters long.");
     } else {
       setPasswordError(""); // Clear error if valid
+    }
+  };
+  const handleEmailBlur = () => {
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Regular expression for email validation
+    if (!emailPattern.test(email)) {
+      setEmailError("Email should be in the format something@gmail.com");
+    } else {
+      setEmailError(""); // Clear error if valid
     }
   };
 
@@ -35,6 +45,12 @@ const Register = () => {
     }
     if (!file) {
       setErr("Please upload an image.");
+      setLoading(false);
+      return;
+    }
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+      setErr("Email should be in the format something@gmail.com");
       setLoading(false);
       return;
     }
@@ -85,7 +101,15 @@ const Register = () => {
         <span className="title">Register</span>
         <form onSubmit={handleSubmit}>
           <input required type="text" placeholder="display name" />
-          <input required type="email" placeholder="email" />
+          <input
+            required
+            type="email"
+            placeholder="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)} // Update email state
+            onBlur={handleEmailBlur} // Check email format on blur
+          />
+          {emailError && <span style={{ color: "red" }}>{emailError}</span>} {/* Display email error */}
           <input
             required
             type="password"
@@ -95,7 +119,7 @@ const Register = () => {
             onBlur={handlePasswordBlur} // Check password length on blur
           />
           {passwordError && <span style={{ color: "red" }}>{passwordError}</span>} {/* Display password error */}
-           <input required style={{ display: "none" }} type="file" id="file" />
+           <input  style={{ display: "none" }} type="file" id="file" />
           <label htmlFor="file">
             <img src={Add} alt="" />
             <span>Add an avatar</span>
