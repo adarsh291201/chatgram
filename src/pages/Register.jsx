@@ -13,6 +13,8 @@ const Register = () => {
   const [passwordError, setPasswordError] = useState(""); // State for password error
   const [email, setEmail] = useState(""); // State to hold the email
   const [emailError, setEmailError] = useState("");
+  const [file, setFile] = useState(null); // State to hold the selected file
+  const [successMessage, setSuccessMessage] = useState(""); // State for success message
   const navigate = useNavigate();
 
   const handlePasswordBlur = () => {
@@ -30,7 +32,12 @@ const Register = () => {
       setEmailError(""); // Clear error if valid
     }
   };
-
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    setFile(selectedFile);
+    setErr(null); // Clear the error message when a file is selected
+    setSuccessMessage("Image uploaded successfully!"); // Set success message
+  };
   const handleSubmit = async (e) => {
     setLoading(true);
     e.preventDefault();
@@ -119,7 +126,13 @@ const Register = () => {
             onBlur={handlePasswordBlur} // Check password length on blur
           />
           {passwordError && <span style={{ color: "red" }}>{passwordError}</span>} {/* Display password error */}
-           <input  style={{ display: "none" }} type="file" id="file" />
+          <input
+            required
+            style={{ display: "none" }}
+            type="file"
+            id="file"
+            onChange={handleFileChange} // Update file state on change
+          />
           <label htmlFor="file">
             <img src={Add} alt="" />
             <span>Add an avatar</span>
@@ -127,6 +140,7 @@ const Register = () => {
           <button disabled={loading}>Sign up</button>
           {loading && "Uploading and compressing the image please wait..."}
           {err && <span style={{ color: "red" }}>{err}</span>}
+          {successMessage && <span style={{ color: "green" }}>{successMessage}</span>} {/* Display success message */}
         </form>
         <p>
           You do have an account? <Link to="/login">Login</Link>
