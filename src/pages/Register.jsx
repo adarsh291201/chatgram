@@ -127,7 +127,7 @@ const Register = () => {
           />
           {passwordError && <span style={{ color: "red" }}>{passwordError}</span>} {/* Display password error */}
           <input
-            required
+            
             style={{ display: "none" }}
             type="file"
             id="file"
